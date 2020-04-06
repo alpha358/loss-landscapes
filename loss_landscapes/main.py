@@ -271,7 +271,7 @@ def random_plane(model: typing.Union[torch.nn.Module, ModelWrapper], metric: Met
     """
     model_start_wrapper = wrap_model(copy.deepcopy(model) if deepcopy_model else model)
 
-    start_point = model_start_wrapper.get_module_parameters().to(DEVICE)
+    start_point = model_start_wrapper.get_module_parameters()
     dir_one = rand_u_like(start_point)
     dir_two = orthogonal_to(dir_one)
 
