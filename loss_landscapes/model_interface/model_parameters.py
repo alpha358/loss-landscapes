@@ -22,6 +22,8 @@ class ModelParameters:
     enables the parameters of models of the same 'shape' (architecture) to be operated on as if they were 'real'
     tensors. A ModelParameters object cannot be converted to a true tensor as it is potentially irregularly
     shaped.
+
+    TODO: ENFORCE GPU OR CPU DEVICE
     """
 
     def __init__(self, parameters: list):

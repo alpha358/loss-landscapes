@@ -146,7 +146,7 @@ def random_line(model_start: typing.Union[torch.nn.Module, ModelWrapper], metric
     direction.mul_(((start_point.model_norm() * distance) / steps) / direction.model_norm())
 
     data_values = []
-    for i in range(steps):
+    for i in tqdm(range(steps)):
         # add a step along the line to the model parameters, then evaluate
         start_point.add_(direction)
         data_values.append(metric(model_start_wrapper))
