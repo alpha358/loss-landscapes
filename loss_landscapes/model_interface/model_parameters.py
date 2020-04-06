@@ -87,7 +87,7 @@ class ModelParameters:
         :return: none
         """
         for idx in range(len(self)):
-            self.parameters[idx] += other[idx]
+            self.parameters[idx] += other[idx].cuda()
 
     def __sub__(self, other: 'ModelParameters') -> 'ModelParameters':
         """
@@ -112,7 +112,7 @@ class ModelParameters:
         :return: none
         """
         for idx in range(len(self)):
-            self.parameters[idx] -= vector[idx]
+            self.parameters[idx] -= vector[idx].cuda()
 
     def __mul__(self, scalar) -> 'ModelParameters':
         """
