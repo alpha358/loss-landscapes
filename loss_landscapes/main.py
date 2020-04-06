@@ -9,7 +9,7 @@ import numpy as np
 from loss_landscapes.model_interface.model_wrapper import ModelWrapper, wrap_model
 from loss_landscapes.model_interface.model_parameters import rand_u_like, orthogonal_to
 from loss_landscapes.metrics.metric import Metric
-
+from tqdm import tqdm
 
 # noinspection DuplicatedCode
 def point(model: typing.Union[torch.nn.Module, ModelWrapper], metric: Metric) -> tuple:
@@ -292,6 +292,9 @@ def random_plane(model: typing.Union[torch.nn.Module, ModelWrapper], metric: Met
     # scale to match steps and total distance
     dir_one.mul_(((start_point.model_norm() * distance) / steps) / dir_one.model_norm())
     dir_two.mul_(((start_point.model_norm() * distance) / steps) / dir_two.model_norm())
+
+    # TODO: make it move in both (positive and negative directions)
+
     # Move start point so that original start params will be in the center of the plot
     dir_one.mul_(steps / 2)
     dir_two.mul_(steps / 2)
@@ -305,7 +308,7 @@ def random_plane(model: typing.Union[torch.nn.Module, ModelWrapper], metric: Met
     # along dir_one and each row signifies one step along dir_two. The implementation is again
     # a little convoluted to avoid constructive operations. Fundamentally we generate the matrix
     # [[start_point + (dir_one * i) + (dir_two * j) for j in range(steps)] for i in range(steps].
-    for i in range(steps):
+    for i in tqdm(range(steps)):
         data_column = []
 
         for j in range(steps):
