@@ -151,7 +151,7 @@ def random_line(model_start: typing.Union[torch.nn.Module, ModelWrapper], metric
         start_point.add_(direction)
         data_values.append(metric(model_start_wrapper))
 
-    return np.array(data_values), vector
+    return np.array(data_values), np.array(vector.cpu()), np.array(direction.cpu())
 
 # noinspection DuplicatedCode
 def planar_interpolation(model_start: typing.Union[torch.nn.Module, ModelWrapper],
