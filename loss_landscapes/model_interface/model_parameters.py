@@ -277,7 +277,7 @@ class ModelParameters:
         return self.parameters
 
 
-def rand_u_like(example_vector: ModelParameters) -> ModelParameters:
+def rand_u_like(example_vector: ModelParameters, return_vector=False) -> ModelParameters:
     """
     Create a new ModelParameters object of size and shape compatible with the given
     example vector, such that the values in the ModelParameter are uniformly distributed
@@ -289,6 +289,9 @@ def rand_u_like(example_vector: ModelParameters) -> ModelParameters:
 
     for param in example_vector:
         new_vector.append(torch.rand(size=param.size(), dtype=example_vector[0].dtype))
+
+    if return_vector:
+        return ModelParameters(new_vector), new_vector
 
     return ModelParameters(new_vector)
 

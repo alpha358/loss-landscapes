@@ -130,7 +130,7 @@ def random_line(model_start: typing.Union[torch.nn.Module, ModelWrapper], metric
     # obtain start point in parameter space and random direction
     # random direction is randomly sampled, then normalized, and finally scaled by distance/steps
     start_point = model_start_wrapper.get_module_parameters()
-    direction = rand_u_like(start_point)
+    direction, vector = rand_u_like(start_point, return_vector=True)
 
     if normalization == 'model':
         direction.model_normalize_(start_point)
@@ -151,8 +151,7 @@ def random_line(model_start: typing.Union[torch.nn.Module, ModelWrapper], metric
         start_point.add_(direction)
         data_values.append(metric(model_start_wrapper))
 
-    return np.array(data_values)
-
+    return np.array(data_values), vector
 
 # noinspection DuplicatedCode
 def planar_interpolation(model_start: typing.Union[torch.nn.Module, ModelWrapper],
