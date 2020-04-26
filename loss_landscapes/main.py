@@ -319,7 +319,7 @@ def random_plane(model: typing.Union[torch.nn.Module, ModelWrapper], metric: Met
     # along dir_one and each row signifies one step along dir_two. The implementation is again
     # a little convoluted to avoid constructive operations. Fundamentally we generate the matrix
     # [[start_point + (dir_one * i) + (dir_two * j) for j in range(steps)] for i in range(steps].
-    for i in tqdm(range(steps)):
+    for i in (range(steps)):
         data_column = []
 
         for j in range(steps):
