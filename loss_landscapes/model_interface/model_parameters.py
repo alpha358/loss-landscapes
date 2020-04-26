@@ -286,6 +286,10 @@ def rand_u_like(example_vector: ModelParameters, return_vector=False) -> ModelPa
     :return: new vector with uniformly distributed values
     """
     new_vector = []
+    
+    '''
+    example_vector --- current model parameters
+    '''
 
     for param in example_vector:
         new_vector.append(torch.rand(size=param.size(), dtype=example_vector[0].dtype))

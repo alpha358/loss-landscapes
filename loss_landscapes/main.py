@@ -131,7 +131,7 @@ def random_line(model_start: typing.Union[torch.nn.Module, ModelWrapper], metric
     # random direction is randomly sampled, then normalized, and finally scaled by distance/steps
     start_point = model_start_wrapper.get_module_parameters()
     # vector ---- just a torch.rand
-    direction, vector = rand_u_like(start_point, return_vector=True)
+    direction = rand_u_like(start_point, return_vector=False)
 
     if normalization == 'model':
         direction.model_normalize_(start_point)
@@ -144,15 +144,26 @@ def random_line(model_start: typing.Union[torch.nn.Module, ModelWrapper], metric
     else:
         raise AttributeError('Unsupported normalization argument. Supported values are model, layer, and filter')
 
-    direction.mul_(((start_point.model_norm() * distance) / steps) / direction.model_norm())
+    # model normalize 
+    # model_norm --- model-wise L2 norm.
+    # direction is a constant that we add to the model
+    direction.mul_( ( (start_point.model_norm() * distance) / steps ) / direction.model_norm() )
+
+
+    if ((start_point.model_norm() * distance) / steps) / direction.model_norm() == ((distance) / steps):
+        print('simplification is okay')
 
     data_values = []
     for i in tqdm(range(steps)):
         # add a step along the line to the model parameters, then evaluate
-        start_point.add_(direction)
+        
+        start_point.add_(direction) 
+        # model points to start_point, therefore it will use these parameters
+        
+        # modifying start point-parameters with step 
         data_values.append(metric(model_start_wrapper))
 
-    return np.array(data_values), vector.cpu().numpy(), direction.cpu().numpy()
+    return np.array(data_values), direction # direction is a constant
 
 # noinspection DuplicatedCode
 def planar_interpolation(model_start: typing.Union[torch.nn.Module, ModelWrapper],
