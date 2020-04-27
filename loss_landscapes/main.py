@@ -132,7 +132,7 @@ def random_line(model_start: typing.Union[torch.nn.Module, ModelWrapper], metric
     start_point = model_start_wrapper.get_module_parameters()
     # vector ---- just a torch.rand
     # direction = rand_u_like(start_point, return_vector=False)
-    direction = rand_n_like(start_point, return_vector=False)
+    direction = rand_n_like(start_point)
     
 
     if normalization == 'model':
