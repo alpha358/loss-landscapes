@@ -7,7 +7,7 @@ import typing
 import torch.nn
 import numpy as np
 from loss_landscapes.model_interface.model_wrapper import ModelWrapper, wrap_model
-from loss_landscapes.model_interface.model_parameters import rand_u_like, orthogonal_to
+from loss_landscapes.model_interface.model_parameters import rand_u_like, orthogonal_to, rand_n_like
 from loss_landscapes.metrics.metric import Metric
 from tqdm import tqdm
 
@@ -131,7 +131,9 @@ def random_line(model_start: typing.Union[torch.nn.Module, ModelWrapper], metric
     # random direction is randomly sampled, then normalized, and finally scaled by distance/steps
     start_point = model_start_wrapper.get_module_parameters()
     # vector ---- just a torch.rand
-    direction = rand_u_like(start_point, return_vector=False)
+    # direction = rand_u_like(start_point, return_vector=False)
+    direction = rand_n_like(start_point, return_vector=False)
+    
 
     if normalization == 'model':
         direction.model_normalize_(start_point)
